@@ -20,12 +20,19 @@ import xmlrpc.client
 from typing import List
 import base64
 from urllib.parse import urljoin
+from pydantic import BaseModel
 
 URL = 'https://edu-heclausanne-jupiter.odoo.com'
 DB = 'edu-heclausanne-jupiter'
 USER = 'oliviakusch@gmail.com'
 PW = 'Blueflowers!1'
 UID = False
+
+class ContactFormRequest(BaseModel):
+    name: str
+    email: str
+    issue_type: str
+    message: str
 
 def connect_odoo(hosturl, db, user, pw):
     "establish connection with odoo, return authentified uid "
@@ -434,6 +441,63 @@ async def validate_sale_order_delivery(so_id: int):
     except Exception as err:
         errmsg = str(err)
         return {"Message": "Odoo error",
+                "Error": f"Unexpected {type(err)} : {errmsg}"}
+    
+
+
+    ###
+###  / c u s t o m e r _ s e r v i c e / c o n t a c t
+###
+@app.post("/customer_service/contact", tags=["🎧 Customer Service"])
+async def submit_contact_form(form_data: ContactFormRequest):
+    """
+    Receives contact form data and posts it as a raw list to Odoo 'Discuss'.
+    """
+    models = xmlrpc.client.ServerProxy(f'{URL}/xmlrpc/2/object')
+
+    try:
+        #we find the channel 
+        channel_search = models.execute_kw(DB, UID, PW, 'discuss.channel', 'search', 
+                                           [[('name', 'ilike', 'General')]])
+        
+        if not channel_search:
+            channel_search = models.execute_kw(DB, UID, PW, 'discuss.channel', 'search', 
+                                           [[('name', 'ilike', 'Support')]])
+            
+        if not channel_search:
+             return {"Message": "Could not find a discussion channel to post to."}
+
+        channel_id = channel_search[0]
+
+        #format the message
+        raw_list = [
+            form_data.name,
+            form_data.email,
+            form_data.issue_type,
+            form_data.message
+        ]
+        
+        #list to string
+        final_message = str(raw_list)
+
+        #post the message
+        models.execute_kw(DB, UID, PW, 'discuss.channel', 'message_post', 
+                          [channel_id], 
+                          {
+                              'body': final_message, 
+                              'message_type': 'comment',
+                              'subtype_xmlid': 'mail.mt_comment',
+                              'author_id': UID
+                          })
+
+        return {
+            "Message": "Inquiry sent successfully.",
+            "Posted_Data": final_message
+        }
+
+    except Exception as err:
+        errmsg = str(err)
+        return {"Message": "Odoo error posting to Discuss:",
                 "Error": f"Unexpected {type(err)} : {errmsg}"}
     
 # 
