@@ -61,6 +61,11 @@ async def hello():
         return {"Message" : f"Problème de connexion au serveur {URL}, base:{DB}, utilisateur:{USER}",
                 "Error" : f"Unexpected  {type(err)} : {err}"}
 
+########################################################################
+################### CUSTOMER & CUSTOMER DATA ###########################
+########################################################################
+
+
 ###
 ###  / c u s t o m e r s / l i s t
 ###
@@ -105,6 +110,12 @@ async def get_customer_data(cust_id: int):
         return {"Message" : f"Odoo error:",
                 "Error" : f"Unexpected  {type(err)} : {err}"}
 
+
+
+########################################################################
+########################## QUOTES ######################################
+########################################################################
+
 ###
 ###  / q u o t e s / { c u s t _ i d }
 ###
@@ -142,6 +153,10 @@ async def get_customer_quotes(cust_id: int):
         errmsg = str(err)
         return {"Message" : f"Odoo error:",
                 "Error" : f"Unexpected  {type(err)} : {errmsg}"}
+
+########################################################################
+########################## SALES ORDERS ################################
+########################################################################
 
 ###
 ###  / s a l e o r d e r s / { c u s t _ i d }
@@ -238,6 +253,10 @@ async def send_and_cancel_sale_order(so_id: int):
                 "Error" : f"Unexpected  {type(err)} : {errmsg}"}
    
 
+
+########################################################################
+########################## INVOICES ####################################
+########################################################################
 
 ###
 ###  / i n v o i c e s / { c u s t _ i d }
@@ -356,7 +375,77 @@ async def get_invoice_preview_url(invoice_id: int):
         errmsg = str(err)
         return {"Message": f"Odoo error getting preview URL for Invoice {invoice_id}:",
                 "Error": f"Unexpected {type(err)} : {errmsg}"}
+    
 
+########################################################################
+########################## DELIVERIES ##################################
+########################################################################
+
+###
+###  / d e l i v e r y / { s o _ i d }
+###
+@app.put("/saleorders/validate_delivery/{so_id}", tags=["🚚 Delivery"])
+async def validate_sale_order_delivery(so_id: int):
+   
+    models = xmlrpc.client.ServerProxy(f'{URL}/xmlrpc/2/object')
+
+
+    try:
+        #get sale order and its linked delivery ID
+        sale_order = models.execute_kw(DB, UID, PW, 'sale.order', 'search_read',
+                                       [[('id', '=', so_id)]],
+                                       {'fields': ['state', 'picking_ids']})
+        if not sale_order:
+            return {"Message": f"Sale order ID {so_id} not found."}
+
+      
+        state = sale_order[0]['state']
+        picking_ids = sale_order[0]['picking_ids']
+        validated_pickings = []
+
+        #if the order is still a draft, confirm it 
+        if state == 'draft':
+            models.execute_kw(DB, UID, PW, 'sale.order', 'action_confirm', [[so_id]])
+            state = 'confirmed'
+
+
+        # validate delivery pickings if exist
+        if picking_ids:
+            #get picking states
+            pickings = models.execute_kw(DB, UID, PW, 'stock.picking', 'read',
+                                         [picking_ids], {'fields': ['state']})
+            for picking in pickings:
+                if picking['state'] not in ['done', 'cancel']:
+                    models.execute_kw(DB, UID, PW, 'stock.picking', 'button_validate', [[picking['id']]])
+                    validated_pickings.append(picking['id'])
+
+
+            #if any pickings validated, mark order as done
+            if validated_pickings:
+                state = 'done'
+
+
+        return {
+            "Message": f"Sale order processed. Current state: {state}",
+            "ValidatedPickings": validated_pickings
+        }
+
+
+    except Exception as err:
+        errmsg = str(err)
+        return {"Message": "Odoo error",
+                "Error": f"Unexpected {type(err)} : {errmsg}"}
+    
+# 
+# for starting api in terminal
+# python -m uvicorn my_odoo_api_lastversion:app --reload --host 127.0.0.1 --port 8000
+
+
+
+########################################################################
+########################  FAILED FUNCTIONS   ###########################
+########################################################################
+'''
 ###
 ###  / i n v o i c e s / p a y / { i n v o i c e _ i d }
 ###
@@ -452,62 +541,4 @@ async def register_invoice_payment(invoice_id: int):
         errmsg = str(err)
         return {"Message": f"Odoo error registering payment for Invoice {invoice_id}. Manual review may be required.",
                 "Error": f"Unexpected {type(err)} : {errmsg}"}
-    
-###
-###  / d e l i v e r y / { s o _ i d }
-###
-@app.put("/saleorders/validate_delivery/{so_id}", tags=["🚚 Delivery"])
-async def validate_sale_order_delivery(so_id: int):
-   
-    models = xmlrpc.client.ServerProxy(f'{URL}/xmlrpc/2/object')
-
-
-    try:
-        #get sale order and its linked delivery ID
-        sale_order = models.execute_kw(DB, UID, PW, 'sale.order', 'search_read',
-                                       [[('id', '=', so_id)]],
-                                       {'fields': ['state', 'picking_ids']})
-        if not sale_order:
-            return {"Message": f"Sale order ID {so_id} not found."}
-
-      
-        state = sale_order[0]['state']
-        picking_ids = sale_order[0]['picking_ids']
-        validated_pickings = []
-
-        #if the order is still a draft, confirm it 
-        if state == 'draft':
-            models.execute_kw(DB, UID, PW, 'sale.order', 'action_confirm', [[so_id]])
-            state = 'confirmed'
-
-
-        # validate delivery pickings if exist
-        if picking_ids:
-            #get picking states
-            pickings = models.execute_kw(DB, UID, PW, 'stock.picking', 'read',
-                                         [picking_ids], {'fields': ['state']})
-            for picking in pickings:
-                if picking['state'] not in ['done', 'cancel']:
-                    models.execute_kw(DB, UID, PW, 'stock.picking', 'button_validate', [[picking['id']]])
-                    validated_pickings.append(picking['id'])
-
-
-            #if any pickings validated, mark order as done
-            if validated_pickings:
-                state = 'done'
-
-
-        return {
-            "Message": f"Sale order processed. Current state: {state}",
-            "ValidatedPickings": validated_pickings
-        }
-
-
-    except Exception as err:
-        errmsg = str(err)
-        return {"Message": "Odoo error",
-                "Error": f"Unexpected {type(err)} : {errmsg}"}
-    
-# 
-# for starting api in terminal
-# python -m uvicorn my_odoo_api_lastversion:app --reload --host 127.0.0.1 --port 8000
+'''
