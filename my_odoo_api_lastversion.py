@@ -290,7 +290,12 @@ async def send_and_cancel_sale_order(so_id: int):
         errmsg = str(err)
         return {"Message" : f"Odoo error sending and cancelling SO {so_id}:",
                 "Error" : f"Unexpected  {type(err)} : {errmsg}"}
-   
+
+########################################################################
+########################## PRODUCTS ####################################
+########################################################################
+
+
 ###
 ###  / p r o d u c t s /
 ###
