@@ -1,0 +1,1149 @@
+[
+    {
+        "id": "ae6ff19507a14f67",
+        "type": "tab",
+        "label": "Test API Odoo Pei ",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "62609c463617c80d",
+        "type": "http request",
+        "z": "ae6ff19507a14f67",
+        "name": "get-status",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://host.docker.internal:8000/get-status",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 370,
+        "y": 200,
+        "wires": [
+            [
+                "22f948ad233ab79c"
+            ]
+        ],
+        "info": "Goes to http://host.docker.internal:8000 , which is the way a docker container contacts it's surrounding host environment."
+    },
+    {
+        "id": "1265308508d74b09",
+        "type": "inject",
+        "z": "ae6ff19507a14f67",
+        "name": "get status",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 160,
+        "wires": [
+            [
+                "62609c463617c80d"
+            ]
+        ]
+    },
+    {
+        "id": "22f948ad233ab79c",
+        "type": "debug",
+        "z": "ae6ff19507a14f67",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "e6b39e4b1a829ef8",
+        "type": "inject",
+        "z": "ae6ff19507a14f67",
+        "name": "customer list",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "object",
+        "payloadType": "date",
+        "x": 150,
+        "y": 280,
+        "wires": [
+            [
+                "a36e45fcd6420f15"
+            ]
+        ]
+    },
+    {
+        "id": "a36e45fcd6420f15",
+        "type": "http request",
+        "z": "ae6ff19507a14f67",
+        "name": "/customers/list",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://host.docker.internal:8000/customers/list",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 360,
+        "y": 300,
+        "wires": [
+            [
+                "db4212305da81306",
+                "2b063e63c0920e02"
+            ]
+        ]
+    },
+    {
+        "id": "db4212305da81306",
+        "type": "debug",
+        "z": "ae6ff19507a14f67",
+        "name": "debug 7",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "e8996456df7da085",
+        "type": "ui-dropdown",
+        "z": "ae6ff19507a14f67",
+        "group": "e4772889bfeb240e",
+        "name": "",
+        "label": "Select Option:",
+        "tooltip": "",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "multiple": false,
+        "chips": false,
+        "clearable": false,
+        "options": [
+            {
+                "label": "",
+                "value": "",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "typeIsComboBox": true,
+        "msgTrigger": "onChange",
+        "x": 1220,
+        "y": 300,
+        "wires": [
+            [
+                "5ede71b0de190b7f",
+                "7427f18603ccbd15",
+                "4c672ec5ea2c3f50",
+                "9220d22b37e8789f",
+                "7c1fd9d970454fc1"
+            ]
+        ]
+    },
+    {
+        "id": "2b063e63c0920e02",
+        "type": "change",
+        "z": "ae6ff19507a14f67",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "options",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1010,
+        "y": 300,
+        "wires": [
+            [
+                "e8996456df7da085"
+            ]
+        ]
+    },
+    {
+        "id": "5ede71b0de190b7f",
+        "type": "debug",
+        "z": "ae6ff19507a14f67",
+        "name": "debug 8",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1440,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "9fb5c22a844f2234",
+        "type": "comment",
+        "z": "ae6ff19507a14f67",
+        "name": "TG1 partie 2",
+        "info": "",
+        "x": 110,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "9e76aa485024b520",
+        "type": "comment",
+        "z": "ae6ff19507a14f67",
+        "name": "TG2 partie 1",
+        "info": "## TG2 partie 1\n\nLes noeuds de cette partie font partie d'un autre mécanisme de base pour le TG2",
+        "x": 990,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "7427f18603ccbd15",
+        "type": "http request",
+        "z": "ae6ff19507a14f67",
+        "name": "/customers/{cust_id}",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "http://host.docker.internal:8000/customers/{{{payload}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 380,
+        "y": 420,
+        "wires": [
+            [
+                "763a1492a4cd90b2",
+                "3e989197e236b6f4"
+            ]
+        ]
+    },
+    {
+        "id": "faf3ed533b804ed9",
+        "type": "inject",
+        "z": "ae6ff19507a14f67",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "24",
+        "payloadType": "num",
+        "x": 110,
+        "y": 400,
+        "wires": [
+            [
+                "7427f18603ccbd15"
+            ]
+        ]
+    },
+    {
+        "id": "763a1492a4cd90b2",
+        "type": "debug",
+        "z": "ae6ff19507a14f67",
+        "name": "debug 9",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "3e989197e236b6f4",
+        "type": "ui-table",
+        "z": "ae6ff19507a14f67",
+        "group": "e4772889bfeb240e",
+        "name": "display_customer",
+        "label": "Client: ",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "maxrows": 0,
+        "passthru": false,
+        "autocols": true,
+        "showSearch": false,
+        "deselect": true,
+        "selectionType": "none",
+        "columns": [
+            {
+                "title": "",
+                "key": "",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            }
+        ],
+        "mobileBreakpoint": "sm",
+        "mobileBreakpointType": "defaults",
+        "action": "replace",
+        "x": 1250,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4c672ec5ea2c3f50",
+        "type": "http request",
+        "z": "ae6ff19507a14f67",
+        "name": "/saleorders/{cust_id}",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "http://host.docker.internal:8000/saleorders/{{{payload}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 380,
+        "y": 540,
+        "wires": [
+            [
+                "d501bd7c71a5cfd1",
+                "ccdb1e4a6083b28c"
+            ]
+        ]
+    },
+    {
+        "id": "d501bd7c71a5cfd1",
+        "type": "debug",
+        "z": "ae6ff19507a14f67",
+        "name": "debug 10",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "ccdb1e4a6083b28c",
+        "type": "ui-table",
+        "z": "ae6ff19507a14f67",
+        "group": "e4772889bfeb240e",
+        "name": "display_saleorders",
+        "label": "Bons de commande:",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "maxrows": 0,
+        "passthru": false,
+        "autocols": true,
+        "showSearch": false,
+        "deselect": true,
+        "selectionType": "none",
+        "columns": [],
+        "mobileBreakpoint": "sm",
+        "mobileBreakpointType": "defaults",
+        "action": "replace",
+        "x": 1250,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "26161b6c403eabcc",
+        "type": "inject",
+        "z": "ae6ff19507a14f67",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "8",
+        "payloadType": "num",
+        "x": 110,
+        "y": 520,
+        "wires": [
+            [
+                "4c672ec5ea2c3f50"
+            ]
+        ]
+    },
+    {
+        "id": "2be76d4c2f497317",
+        "type": "inject",
+        "z": "ae6ff19507a14f67",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "56",
+        "payloadType": "str",
+        "x": 90,
+        "y": 800,
+        "wires": [
+            [
+                "cf235744445c4970"
+            ]
+        ]
+    },
+    {
+        "id": "feddd551b38675d4",
+        "type": "http request",
+        "z": "ae6ff19507a14f67",
+        "name": "/saleorder/confirm",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://host.docker.internal:8000/saleorders/confirm",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 410,
+        "y": 800,
+        "wires": [
+            [
+                "bbb19f712621eaf4"
+            ]
+        ]
+    },
+    {
+        "id": "bbb19f712621eaf4",
+        "type": "debug",
+        "z": "ae6ff19507a14f67",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "cf235744445c4970",
+        "type": "change",
+        "z": "ae6ff19507a14f67",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "[payload]",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 260,
+        "y": 880,
+        "wires": [
+            [
+                "feddd551b38675d4"
+            ]
+        ]
+    },
+    {
+        "id": "b660b34348ab18b6",
+        "type": "inject",
+        "z": "ae6ff19507a14f67",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "24",
+        "payloadType": "str",
+        "x": 90,
+        "y": 660,
+        "wires": [
+            [
+                "9220d22b37e8789f"
+            ]
+        ]
+    },
+    {
+        "id": "9220d22b37e8789f",
+        "type": "http request",
+        "z": "ae6ff19507a14f67",
+        "name": "/quotes/{cust_id}",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "http://host.docker.internal:8000/quotes/{{{payload}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 370,
+        "y": 660,
+        "wires": [
+            [
+                "aee04af972c3bc92",
+                "a73673915af674cc"
+            ]
+        ]
+    },
+    {
+        "id": "aee04af972c3bc92",
+        "type": "debug",
+        "z": "ae6ff19507a14f67",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "a73673915af674cc",
+        "type": "ui-table",
+        "z": "ae6ff19507a14f67",
+        "group": "e4772889bfeb240e",
+        "name": "display_quotations",
+        "label": "Quotations",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "maxrows": 0,
+        "passthru": false,
+        "autocols": true,
+        "showSearch": false,
+        "deselect": true,
+        "selectionType": "click",
+        "columns": [],
+        "mobileBreakpoint": "sm",
+        "mobileBreakpointType": "defaults",
+        "action": "replace",
+        "x": 1250,
+        "y": 660,
+        "wires": [
+            [
+                "991fa6bb3419a481"
+            ]
+        ]
+    },
+    {
+        "id": "991fa6bb3419a481",
+        "type": "change",
+        "z": "ae6ff19507a14f67",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "selected_quote_id",
+                "pt": "flow",
+                "to": "payload.id",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1480,
+        "y": 660,
+        "wires": [
+            [
+                "2b746b68df496f68"
+            ]
+        ]
+    },
+    {
+        "id": "1df9429c5a372d4a",
+        "type": "change",
+        "z": "ae6ff19507a14f67",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "selected_quote_id",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1380,
+        "y": 740,
+        "wires": [
+            [
+                "cf235744445c4970"
+            ]
+        ]
+    },
+    {
+        "id": "cd496dbe8e071c58",
+        "type": "ui-button",
+        "z": "ae6ff19507a14f67",
+        "group": "e4772889bfeb240e",
+        "name": "Confirm Quotation",
+        "label": "Confirm Quotation",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "emulateClick": false,
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "iconPosition": "left",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "buttonColor": "",
+        "textColor": "",
+        "iconColor": "",
+        "enableClick": true,
+        "enablePointerdown": false,
+        "pointerdownPayload": "",
+        "pointerdownPayloadType": "str",
+        "enablePointerup": false,
+        "pointerupPayload": "",
+        "pointerupPayloadType": "str",
+        "x": 1190,
+        "y": 740,
+        "wires": [
+            [
+                "1df9429c5a372d4a"
+            ]
+        ]
+    },
+    {
+        "id": "2b746b68df496f68",
+        "type": "debug",
+        "z": "ae6ff19507a14f67",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1700,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "45827865a858d01f",
+        "type": "inject",
+        "z": "ae6ff19507a14f67",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "24",
+        "payloadType": "str",
+        "x": 110,
+        "y": 960,
+        "wires": [
+            [
+                "7c1fd9d970454fc1"
+            ]
+        ]
+    },
+    {
+        "id": "7c1fd9d970454fc1",
+        "type": "http request",
+        "z": "ae6ff19507a14f67",
+        "name": "/invoices/{cust_id}",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "http://host.docker.internal:8000/invoices/{{{payload}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 390,
+        "y": 1000,
+        "wires": [
+            [
+                "65de044e47f70e02",
+                "742a6e7996d6c90f"
+            ]
+        ]
+    },
+    {
+        "id": "65de044e47f70e02",
+        "type": "debug",
+        "z": "ae6ff19507a14f67",
+        "name": "debug 12",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "742a6e7996d6c90f",
+        "type": "ui-table",
+        "z": "ae6ff19507a14f67",
+        "group": "dac97acc1d71ce71",
+        "name": "display_invoices",
+        "label": "",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "maxrows": 0,
+        "passthru": false,
+        "autocols": false,
+        "showSearch": true,
+        "deselect": true,
+        "selectionType": "click",
+        "columns": [
+            {
+                "title": "ID",
+                "key": "id",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Reference",
+                "key": "name",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "State",
+                "key": "state",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Invoice Date",
+                "key": "invoice_date",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Total Amount",
+                "key": "amount_total",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Items",
+                "key": "invoice_line_ids",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            }
+        ],
+        "mobileBreakpoint": "sm",
+        "mobileBreakpointType": "defaults",
+        "action": "replace",
+        "className": "",
+        "x": 680,
+        "y": 1160,
+        "wires": [
+            [
+                "609fd16872645abf"
+            ]
+        ]
+    },
+    {
+        "id": "609fd16872645abf",
+        "type": "change",
+        "z": "ae6ff19507a14f67",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "msg.payload.invoice_line_ids",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 930,
+        "y": 1160,
+        "wires": [
+            [
+                "7102ae7eebb1b0e6"
+            ]
+        ]
+    },
+    {
+        "id": "7102ae7eebb1b0e6",
+        "type": "ui-table",
+        "z": "ae6ff19507a14f67",
+        "group": "6d87e13789dfc5f3",
+        "name": "display_invoice_lines",
+        "label": "",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "maxrows": 0,
+        "passthru": false,
+        "autocols": false,
+        "showSearch": true,
+        "deselect": true,
+        "selectionType": "none",
+        "columns": [
+            {
+                "title": "ID",
+                "key": "id",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Item",
+                "key": "name",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Quantity",
+                "key": "quantity",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Unit Price",
+                "key": "price_unit",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Total",
+                "key": "price_total",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            }
+        ],
+        "mobileBreakpoint": "sm",
+        "mobileBreakpointType": "defaults",
+        "action": "replace",
+        "className": "",
+        "x": 1260,
+        "y": 1160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e4772889bfeb240e",
+        "type": "ui-group",
+        "name": "group-1",
+        "page": "82c9e9eed14c67a0",
+        "width": "6",
+        "height": "1",
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "dac97acc1d71ce71",
+        "type": "ui-group",
+        "name": "Invoices",
+        "page": "81dd615cbfb5046f",
+        "width": 6,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "6d87e13789dfc5f3",
+        "type": "ui-group",
+        "name": "Invoice Line",
+        "page": "81dd615cbfb5046f",
+        "width": 6,
+        "height": 1,
+        "order": 2,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "82c9e9eed14c67a0",
+        "type": "ui-page",
+        "name": "Test API Odoo",
+        "ui": "cb48955d1093a166",
+        "path": "/page5",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "d3b098e8d3850623",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "81dd615cbfb5046f",
+        "type": "ui-page",
+        "name": "Test API Odoo - invoices",
+        "ui": "cb48955d1093a166",
+        "path": "/page10",
+        "icon": "account-file-text",
+        "layout": "grid",
+        "theme": "d3b098e8d3850623",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 2,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "cb48955d1093a166",
+        "type": "ui-base",
+        "name": "My Dashboard",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "navigationStyle": "icon",
+        "titleBarStyle": "default"
+    },
+    {
+        "id": "d3b098e8d3850623",
+        "type": "ui-theme",
+        "name": "Purple Theme",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#7000cc",
+            "bgPage": "#d9bdef",
+            "groupBg": "#ffffff",
+            "groupOutline": "#7000cc"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "868bbd14e4c6ec69",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "@flowfuse/node-red-dashboard": "1.29.0"
+        }
+    }
+]
