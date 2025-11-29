@@ -169,6 +169,39 @@ async def get_customer_quotes(cust_id: int):
                 "Error" : f"Unexpected  {type(err)} : {errmsg}"}
 
 ###
+###  / q u o t e s / { q u o t e _ i d }
+###
+
+@app.post("/quotes/{quote_id}/confirm", tags=["📋 Quotations"])
+async def confirm_single_quote(quote_id: int):
+    """
+    Confirm a single quotation by its ID.
+    In Odoo, quotations are `sale.order` records in state 'draft' or 'sent'.
+    Calling `action_confirm` will turn them into confirmed sale orders.
+    """
+    models = xmlrpc.client.ServerProxy(f'{URL}/xmlrpc/2/object')
+
+    try:
+        # action_confirm expects a list of IDs
+        result = models.execute_kw(
+            DB, UID, PW,
+            'sale.order', 'action_confirm',
+            [[quote_id]]
+        )
+
+        return {
+            "Message": f"Quotation {quote_id} confirmed successfully.",
+            "Result": result
+        }
+
+    except Exception as err:
+        errmsg = str(err)
+        return {
+            "Message": f"Odoo error confirming quotation {quote_id}:",
+            "Error": f"Unexpected {type(err)} : {errmsg}"
+        }
+ 
+###
 ###  / q u o t e s / n e w _ o r d e r
 ###
 class NewOrderRequest(BaseModel):
@@ -433,6 +466,7 @@ async def get_invoice_info(invoice_id: int):
     except Exception as err:
         errmsg = str(err)
         return {"Message": "Odoo error:", "Error": f"Unexpected {type(err)} : {errmsg}"}
+
 ###
 ###  / i n v o i c e s / { i n v o i c e _ i d } / p r e v i e w _ u r l
 ###
