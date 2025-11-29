@@ -23,6 +23,8 @@ from urllib.parse import urljoin
 from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
+from pydantic import BaseModel
+from typing import List
 
 URL = 'https://edu-heclausanne-jupiter.odoo.com'
 DB = 'edu-heclausanne-jupiter'
@@ -169,9 +171,15 @@ async def get_customer_quotes(cust_id: int):
 ###
 ###  / q u o t e s / n e w _ o r d e r
 ###
+class NewOrderRequest(BaseModel):
+    cust_id: int
+    product_ids: List[int]
+
 @app.post("/quotes/new_order", tags=["📋 Quotations"])
-async def create_sale_order(cust_id: int, product_ids: List[int]):
-    "Create a quotation in draft state from a list of products selected by customer"
+async def create_sale_order(body: NewOrderRequest):
+    cust_id = body.cust_id
+    product_ids = body.product_ids
+
     models = xmlrpc.client.ServerProxy(f'{URL}/xmlrpc/2/object')
     partner_id = {'partner_id': cust_id}
     pid_fields = {'fields': ['name', 'list_price']}
@@ -182,9 +190,14 @@ async def create_sale_order(cust_id: int, product_ids: List[int]):
             product = models.execute_kw(DB, UID, PW, 'product.product', 'read', [[pid]], pid_fields)
             product_info = product[0]
 
-            psol_fields = {'order_id': newso_id, 'product_id': pid, 'name': product_info['name'], 'product_uom_qty': 1.0,
-                           'price_unit': product_info['list_price']}
-            psol = models.execute_kw(DB, UID, PW, 'sale.order.line', 'create', [psol_fields])
+            psol_fields = {
+                'order_id': newso_id,
+                'product_id': pid,
+                'name': product_info['name'],
+                'product_uom_qty': 1.0,
+                'price_unit': product_info['list_price']
+            }
+            models.execute_kw(DB, UID, PW, 'sale.order.line', 'create', [psol_fields])
 
         return {
             "Message": f"Quotation {newso_id} created successfully.",
@@ -192,8 +205,11 @@ async def create_sale_order(cust_id: int, product_ids: List[int]):
         }
     except Exception as err:
         errmsg = str(err)
-        return {"Message": f"Odoo error:",
-         "Error": f"Unexpected  {type(err)} : {errmsg}"}
+        return {
+            "Message": "Odoo error:",
+            "Error": f"Unexpected {type(err)} : {errmsg}"
+        }
+
 
 ########################################################################
 ########################## SALES ORDERS ################################
@@ -604,7 +620,7 @@ async def validate_sale_order_delivery(so_id: int):
     
 
 
-    ###
+###
 ###  / c u s t o m e r _ s e r v i c e / c o n t a c t
 ###
 @app.post("/customer_service/contact", tags=["🎧 Customer Service"])
