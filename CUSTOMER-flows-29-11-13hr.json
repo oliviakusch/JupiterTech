@@ -1,0 +1,1913 @@
+[
+    {
+        "id": "94f976820f28d018",
+        "type": "tab",
+        "label": "CUSTOMER",
+        "disabled": false,
+        "info": "added login page and reorganized some nodes",
+        "env": []
+    },
+    {
+        "id": "c56c8fed7d3c994f",
+        "type": "http request",
+        "z": "94f976820f28d018",
+        "name": "get-status",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://host.docker.internal:8000/get-status",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 380,
+        "y": 400,
+        "wires": [
+            [
+                "d840a2a13b21d8b6"
+            ]
+        ],
+        "info": "Goes to http://host.docker.internal:8000 , which is the way a docker container contacts it's surrounding host environment."
+    },
+    {
+        "id": "6038c7aa57dd2ece",
+        "type": "inject",
+        "z": "94f976820f28d018",
+        "name": "get status",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 400,
+        "wires": [
+            [
+                "c56c8fed7d3c994f"
+            ]
+        ]
+    },
+    {
+        "id": "d840a2a13b21d8b6",
+        "type": "debug",
+        "z": "94f976820f28d018",
+        "name": "status debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 630,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "c6dc402b7b7fbbbe",
+        "type": "inject",
+        "z": "94f976820f28d018",
+        "name": "customer list",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "object",
+        "payloadType": "date",
+        "x": 170,
+        "y": 580,
+        "wires": [
+            [
+                "719e141a961e8623"
+            ]
+        ]
+    },
+    {
+        "id": "719e141a961e8623",
+        "type": "http request",
+        "z": "94f976820f28d018",
+        "name": "/customers/list",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://host.docker.internal:8000/customers/list",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 380,
+        "y": 580,
+        "wires": [
+            [
+                "8c3c32d7a1546f3c",
+                "dd998b8884a9d739"
+            ]
+        ]
+    },
+    {
+        "id": "8c3c32d7a1546f3c",
+        "type": "debug",
+        "z": "94f976820f28d018",
+        "name": "customer list debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 390,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "2ebdec54e5219182",
+        "type": "ui-dropdown",
+        "z": "94f976820f28d018",
+        "group": "6bf7017ac46e80ab",
+        "name": "",
+        "label": "Select Option:",
+        "tooltip": "",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "multiple": false,
+        "chips": false,
+        "clearable": false,
+        "options": [
+            {
+                "label": "",
+                "value": "",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "typeIsComboBox": true,
+        "msgTrigger": "onChange",
+        "x": 880,
+        "y": 580,
+        "wires": [
+            [
+                "f62120a7ad56bae1",
+                "fa41f26b4bfc783f"
+            ]
+        ]
+    },
+    {
+        "id": "dd998b8884a9d739",
+        "type": "change",
+        "z": "94f976820f28d018",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "options",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 580,
+        "wires": [
+            [
+                "2ebdec54e5219182"
+            ]
+        ]
+    },
+    {
+        "id": "f62120a7ad56bae1",
+        "type": "debug",
+        "z": "94f976820f28d018",
+        "name": "select customer debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "81de7948375164f9",
+        "type": "comment",
+        "z": "94f976820f28d018",
+        "name": "TG1 partie 2",
+        "info": "",
+        "x": 150,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "7ebe7e23dbdae8b9",
+        "type": "comment",
+        "z": "94f976820f28d018",
+        "name": "TG2 partie 1",
+        "info": "## TG2 partie 1\n\nLes noeuds de cette partie font partie d'un autre mécanisme de base pour le TG2",
+        "x": 1110,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "a4ab6280087fa74b",
+        "type": "http request",
+        "z": "94f976820f28d018",
+        "name": "/customers/{cust_id}",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "http://host.docker.internal:8000/customers/{{{payload}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1480,
+        "y": 120,
+        "wires": [
+            [
+                "8f28507b8e35b30c",
+                "895821c634d0b230"
+            ]
+        ]
+    },
+    {
+        "id": "8f28507b8e35b30c",
+        "type": "debug",
+        "z": "94f976820f28d018",
+        "name": "cust id debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1490,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "895821c634d0b230",
+        "type": "ui-table",
+        "z": "94f976820f28d018",
+        "group": "ee662d82cf0aed2a",
+        "name": "display_customer",
+        "label": "Client: ",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "maxrows": 0,
+        "passthru": false,
+        "autocols": true,
+        "showSearch": false,
+        "deselect": true,
+        "selectionType": "none",
+        "columns": [
+            {
+                "title": "",
+                "key": "",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            }
+        ],
+        "mobileBreakpoint": "sm",
+        "mobileBreakpointType": "defaults",
+        "action": "replace",
+        "x": 1750,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a90c1ff2b3484cac",
+        "type": "http request",
+        "z": "94f976820f28d018",
+        "name": "/saleorders/{cust_id}",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "http://host.docker.internal:8000/saleorders/{{{payload}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1480,
+        "y": 1020,
+        "wires": [
+            [
+                "dcdfc3d39fcd82b5",
+                "1dc18b7a68f3b08b"
+            ]
+        ]
+    },
+    {
+        "id": "dcdfc3d39fcd82b5",
+        "type": "debug",
+        "z": "94f976820f28d018",
+        "name": "s/o cust id debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1490,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "1dc18b7a68f3b08b",
+        "type": "ui-table",
+        "z": "94f976820f28d018",
+        "group": "9df1fbab7fbb06a7",
+        "name": "display_saleorders",
+        "label": "Bons de commande:",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "maxrows": 0,
+        "passthru": false,
+        "autocols": true,
+        "showSearch": false,
+        "deselect": true,
+        "selectionType": "click",
+        "columns": [],
+        "mobileBreakpoint": "sm",
+        "mobileBreakpointType": "defaults",
+        "action": "replace",
+        "x": 1750,
+        "y": 1020,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b3ccfaf255ecd16f",
+        "type": "http request",
+        "z": "94f976820f28d018",
+        "name": "/saleorder/confirm",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://host.docker.internal:8000/saleorders/confirm",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1250,
+        "y": 1520,
+        "wires": [
+            [
+                "c431ded3407a327d"
+            ]
+        ]
+    },
+    {
+        "id": "c431ded3407a327d",
+        "type": "debug",
+        "z": "94f976820f28d018",
+        "name": "debug 10",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1500,
+        "y": 1520,
+        "wires": []
+    },
+    {
+        "id": "8ee3183fd0da0809",
+        "type": "change",
+        "z": "94f976820f28d018",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "[payload]",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1020,
+        "y": 1520,
+        "wires": [
+            [
+                "b3ccfaf255ecd16f"
+            ]
+        ]
+    },
+    {
+        "id": "a603d1ccd6890af5",
+        "type": "http request",
+        "z": "94f976820f28d018",
+        "name": "/quotes/{cust_id}",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "http://host.docker.internal:8000/quotes/{{{payload}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1470,
+        "y": 360,
+        "wires": [
+            [
+                "4912f73f34c9a753",
+                "868a08ceb2662317"
+            ]
+        ]
+    },
+    {
+        "id": "4912f73f34c9a753",
+        "type": "debug",
+        "z": "94f976820f28d018",
+        "name": "quote cust id",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1470,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "ef9d6bb1f19ab0ab",
+        "type": "ui-table",
+        "z": "94f976820f28d018",
+        "group": "e4772889bfeb240e",
+        "name": "display_quotations",
+        "label": "Quotations",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "maxrows": 0,
+        "passthru": false,
+        "autocols": false,
+        "showSearch": false,
+        "deselect": true,
+        "selectionType": "click",
+        "columns": [
+            {
+                "title": "Quote ID",
+                "key": "id",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Order Reference",
+                "key": "name",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Order Status",
+                "key": "state",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Order Created",
+                "key": "create_date",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Total Amount",
+                "key": "amount_total",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Order Summary",
+                "key": "order_line_products",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            }
+        ],
+        "mobileBreakpoint": "sm",
+        "mobileBreakpointType": "defaults",
+        "action": "replace",
+        "x": 1970,
+        "y": 360,
+        "wires": [
+            [
+                "644d91dfdcb6fa29",
+                "e7b5d8ad6a6f9797"
+            ]
+        ]
+    },
+    {
+        "id": "644d91dfdcb6fa29",
+        "type": "change",
+        "z": "94f976820f28d018",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "selected_quote_id",
+                "pt": "flow",
+                "to": "payload.id",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2280,
+        "y": 280,
+        "wires": [
+            [
+                "9802c020869705d4"
+            ]
+        ]
+    },
+    {
+        "id": "76b268eaced50bf0",
+        "type": "change",
+        "z": "94f976820f28d018",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "selected_quote_id",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1040,
+        "y": 1680,
+        "wires": [
+            [
+                "8ee3183fd0da0809"
+            ]
+        ]
+    },
+    {
+        "id": "9802c020869705d4",
+        "type": "debug",
+        "z": "94f976820f28d018",
+        "name": "selected quote debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2280,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "97d29435894e7e23",
+        "type": "http request",
+        "z": "94f976820f28d018",
+        "name": "/invoices/{cust_id}",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "http://host.docker.internal:8000/invoices/{{{payload}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1470,
+        "y": 780,
+        "wires": [
+            [
+                "e6a236ddcebc663f",
+                "e2d3c46172e378ba"
+            ]
+        ]
+    },
+    {
+        "id": "e6a236ddcebc663f",
+        "type": "debug",
+        "z": "94f976820f28d018",
+        "name": "invoice cust id",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1480,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "e2d3c46172e378ba",
+        "type": "ui-table",
+        "z": "94f976820f28d018",
+        "group": "dac97acc1d71ce71",
+        "name": "display_invoices",
+        "label": "",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "maxrows": 0,
+        "passthru": false,
+        "autocols": false,
+        "showSearch": true,
+        "deselect": true,
+        "selectionType": "click",
+        "columns": [
+            {
+                "title": "ID",
+                "key": "id",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Reference",
+                "key": "name",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "State",
+                "key": "state",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Invoice Date",
+                "key": "invoice_date",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Total Amount",
+                "key": "amount_total",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Items",
+                "key": "invoice_line_ids",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            }
+        ],
+        "mobileBreakpoint": "sm",
+        "mobileBreakpointType": "defaults",
+        "action": "replace",
+        "className": "",
+        "x": 1740,
+        "y": 780,
+        "wires": [
+            [
+                "4f9b1a68e4a3d1a2"
+            ]
+        ]
+    },
+    {
+        "id": "4f9b1a68e4a3d1a2",
+        "type": "change",
+        "z": "94f976820f28d018",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "msg.payload.invoice_line_ids",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2020,
+        "y": 780,
+        "wires": [
+            [
+                "bd14a85db76729b4"
+            ]
+        ]
+    },
+    {
+        "id": "bd14a85db76729b4",
+        "type": "ui-table",
+        "z": "94f976820f28d018",
+        "group": "6d87e13789dfc5f3",
+        "name": "display_invoice_lines",
+        "label": "",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "maxrows": 0,
+        "passthru": false,
+        "autocols": false,
+        "showSearch": true,
+        "deselect": true,
+        "selectionType": "none",
+        "columns": [
+            {
+                "title": "ID",
+                "key": "id",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Item",
+                "key": "name",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Quantity",
+                "key": "quantity",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Unit Price",
+                "key": "price_unit",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Total",
+                "key": "price_total",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            }
+        ],
+        "mobileBreakpoint": "sm",
+        "mobileBreakpointType": "defaults",
+        "action": "replace",
+        "className": "",
+        "x": 2280,
+        "y": 780,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fa41f26b4bfc783f",
+        "type": "change",
+        "z": "94f976820f28d018",
+        "name": "used logged-in customer",
+        "rules": [
+            {
+                "t": "set",
+                "p": "customer_id",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1170,
+        "y": 580,
+        "wires": [
+            [
+                "f2b0ae055556c506",
+                "a90c1ff2b3484cac",
+                "a603d1ccd6890af5",
+                "97d29435894e7e23",
+                "a4ab6280087fa74b",
+                "dcd471923db98250",
+                "81dc12615ff77472"
+            ]
+        ]
+    },
+    {
+        "id": "f2b0ae055556c506",
+        "type": "debug",
+        "z": "94f976820f28d018",
+        "name": "cust login debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1160,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "6ae6785ce3cf192c",
+        "type": "ui-table",
+        "z": "94f976820f28d018",
+        "group": "b2371a4422d431f8",
+        "name": "selected quotation",
+        "label": "",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "maxrows": 0,
+        "passthru": false,
+        "autocols": true,
+        "showSearch": true,
+        "deselect": true,
+        "selectionType": "none",
+        "columns": [
+            {
+                "title": "id",
+                "key": "",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "name",
+                "key": "",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "product_id",
+                "key": "",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "product_uom_qty",
+                "key": "",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "price_total",
+                "key": "",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            }
+        ],
+        "mobileBreakpoint": "sm",
+        "mobileBreakpointType": "defaults",
+        "action": "replace",
+        "className": "",
+        "x": 2530,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e7b5d8ad6a6f9797",
+        "type": "change",
+        "z": "94f976820f28d018",
+        "name": "extract order line",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.order_line",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2250,
+        "y": 360,
+        "wires": [
+            [
+                "6ae6785ce3cf192c"
+            ]
+        ]
+    },
+    {
+        "id": "b7a5e3171e761448",
+        "type": "comment",
+        "z": "94f976820f28d018",
+        "name": "missing price",
+        "info": "this is working and I am doing a safe \nsave so that I can ensure that I save a \nworking copy but I cannot get the prices\nto show and still have it all work ",
+        "x": 2510,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "868a08ceb2662317",
+        "type": "function",
+        "z": "94f976820f28d018",
+        "name": "format order line",
+        "func": "// Expecting quotes to be an array, but the API might wrap it.\n// Start from the raw payload.\nlet quotes = msg.payload;\n\n// 1) Unwrap common patterns if it's not directly an array\nif (!Array.isArray(quotes)) {\n    if (Array.isArray(quotes.result)) {\n        quotes = quotes.result;\n    } else if (Array.isArray(quotes.data)) {\n        quotes = quotes.data;\n    } else if (Array.isArray(quotes.quotes)) {\n        quotes = quotes.quotes;\n    } else {\n        // Log what we actually got, to see the shape in the debug sidebar\n        node.warn(\"format order line: payload is not an array: \" + JSON.stringify(msg.payload));\n        return msg;  // keep original so you can inspect it\n    }\n}\n\n// 2) For each quote, build a nice \"order_line_products\" string\nquotes = quotes.map(q => {\n    let lines = q.order_line;\n\n    // Sometimes order_line might be a JSON string — try to parse if so\n    if (typeof lines === \"string\") {\n        try {\n            lines = JSON.parse(lines);\n        } catch (e) {\n            lines = [];\n        }\n    }\n\n    if (!Array.isArray(lines)) {\n        lines = [];\n    }\n\n    const productNames = lines\n        .map(l => l.name || \"\")\n        .filter(n => n)               // drop empty names\n        .join(\", \");\n\n    return {\n        ...q,\n        order_line: lines,            // keep the original structure for the detail table\n        order_line_products: productNames  // new summary field for the main table\n    };\n});\n\n// 3) Put it back into msg.payload for the ui-table\nmsg.payload = quotes;\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1720,
+        "y": 360,
+        "wires": [
+            [
+                "ef9d6bb1f19ab0ab",
+                "0864a7ef1dc74ddb"
+            ]
+        ]
+    },
+    {
+        "id": "0864a7ef1dc74ddb",
+        "type": "debug",
+        "z": "94f976820f28d018",
+        "name": "check order line",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload[0]",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1740,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "9e2c69fd643ae0e9",
+        "type": "comment",
+        "z": "94f976820f28d018",
+        "name": "CUSTOMERS",
+        "info": "",
+        "x": 1450,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "5ee85fd551ba7f26",
+        "type": "comment",
+        "z": "94f976820f28d018",
+        "name": "QUOTATIONS",
+        "info": "",
+        "x": 1450,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "95d84bdd303503f3",
+        "type": "comment",
+        "z": "94f976820f28d018",
+        "name": "INVOICES",
+        "info": "",
+        "x": 1440,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "ce6b0419aa829efc",
+        "type": "comment",
+        "z": "94f976820f28d018",
+        "name": "SALES ORDERS",
+        "info": "",
+        "x": 1460,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "91f87dd2ddce1153",
+        "type": "comment",
+        "z": "94f976820f28d018",
+        "name": "DELIVERIES",
+        "info": "",
+        "x": 1450,
+        "y": 1140,
+        "wires": []
+    },
+    {
+        "id": "dcd471923db98250",
+        "type": "http request",
+        "z": "94f976820f28d018",
+        "name": "deliveries/cust_id",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "http://host.docker.internal:8000/customers/{{{payload}}}/deliveries",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1470,
+        "y": 1240,
+        "wires": [
+            [
+                "47ec95dec0d6c1ae",
+                "eb7df607430db805"
+            ]
+        ]
+    },
+    {
+        "id": "47ec95dec0d6c1ae",
+        "type": "debug",
+        "z": "94f976820f28d018",
+        "name": "deliveries debug",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 1490,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "8411b9112e34c299",
+        "type": "ui-table",
+        "z": "94f976820f28d018",
+        "group": "b40b2dff38577809",
+        "name": "display deliveries",
+        "label": "",
+        "order": 1,
+        "width": "5",
+        "height": "1",
+        "maxrows": 0,
+        "passthru": false,
+        "autocols": false,
+        "showSearch": true,
+        "deselect": true,
+        "selectionType": "none",
+        "columns": [
+            {
+                "title": "Order ID",
+                "key": "order_id",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Order",
+                "key": "order_name",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "State",
+                "key": "order_state",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Order Date",
+                "key": "date_order",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            },
+            {
+                "title": "Status",
+                "key": "delivery_status",
+                "keyType": "key",
+                "type": "text",
+                "width": "",
+                "align": "start"
+            }
+        ],
+        "mobileBreakpoint": "sm",
+        "mobileBreakpointType": "defaults",
+        "action": "replace",
+        "className": "",
+        "x": 1990,
+        "y": 1240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "eb7df607430db805",
+        "type": "function",
+        "z": "94f976820f28d018",
+        "name": "format deliveries",
+        "func": "// Expecting msg.payload to look like:\n// { customer_id: 14, orders: [ {...}, {...}, ... ] }\n\nlet data = msg.payload;\nlet orders = [];\n\n// If the HTTP response is wrapped differently, unwrap common cases:\nif (Array.isArray(data)) {\n    // Already an array of orders\n    orders = data;\n} else if (Array.isArray(data.orders)) {\n    // Standard: { customer_id, orders: [...] }\n    orders = data.orders;\n} else if (data.result && Array.isArray(data.result.orders)) {\n    orders = data.result.orders;\n} else {\n    // Fallback: log what we got so you can inspect in debug\n    node.warn(\"Unexpected deliveries shape: \" + JSON.stringify(data));\n    msg.payload = data;\n    return msg;\n}\n\n// Build a *flat* list of orders for the table\nconst rows = orders.map(o => ({\n    order_id: o.order_id,\n    order_name: o.order_name,\n    order_state: o.order_state,\n    date_order: o.date_order,\n    delivery_status: o.delivery_status,\n    deliveries_count: (o.deliveries || []).length,\n    // optional: human-readable list of deliveries (remove if you don't want it)\n    deliveries_summary: (o.deliveries || [])\n        .map(d => `${d.name} (${d.state})`)\n        .join(\", \")\n}));\n\nmsg.payload = rows;\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1740,
+        "y": 1240,
+        "wires": [
+            [
+                "3580f7d7d2075483",
+                "8411b9112e34c299"
+            ]
+        ]
+    },
+    {
+        "id": "3580f7d7d2075483",
+        "type": "debug",
+        "z": "94f976820f28d018",
+        "name": "delivery format debug",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1740,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "81dc12615ff77472",
+        "type": "http request",
+        "z": "94f976820f28d018",
+        "name": "/products",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "http://host.docker.internal:8000/products/",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1440,
+        "y": 580,
+        "wires": [
+            [
+                "d306f0d7627f2755",
+                "874d6c106e1a60c0"
+            ]
+        ]
+    },
+    {
+        "id": "2ca9275a654190cb",
+        "type": "comment",
+        "z": "94f976820f28d018",
+        "name": "PRODUCTS & ORDERS",
+        "info": "",
+        "x": 1470,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "d306f0d7627f2755",
+        "type": "debug",
+        "z": "94f976820f28d018",
+        "name": "get product debug",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1450,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "874d6c106e1a60c0",
+        "type": "ui-table",
+        "z": "94f976820f28d018",
+        "group": "cf76aa0c8afd70b1",
+        "name": "display products",
+        "label": "",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "maxrows": 0,
+        "passthru": false,
+        "autocols": true,
+        "showSearch": true,
+        "deselect": true,
+        "selectionType": "checkbox",
+        "columns": [],
+        "mobileBreakpoint": "sm",
+        "mobileBreakpointType": "defaults",
+        "action": "replace",
+        "className": "",
+        "x": 1700,
+        "y": 580,
+        "wires": [
+            [
+                "f578b4e95f9a0b84"
+            ]
+        ]
+    },
+    {
+        "id": "f578b4e95f9a0b84",
+        "type": "function",
+        "z": "94f976820f28d018",
+        "name": "capture selected products",
+        "func": "// Capture selected products into a \"cart\" and show them in another table.\n\n// msg.payload is usually either:\n//  - a single row object representing the clicked/toggled row, OR\n//  - an array of selected rows (depending on ui-table settings).\n\nlet selectedRows = flow.get('selected_products') || [];\n\nfunction indexById(arr, id) {\n    return arr.findIndex(r => r.value === id);\n}\n\nif (Array.isArray(msg.payload)) {\n    // If ui-table sends all selected rows at once, just replace\n    selectedRows = msg.payload;\n} else if (msg.payload && typeof msg.payload === 'object') {\n    const row = msg.payload;\n    const id = row.value;   // product.product id from your API\n\n    if (id == null) {\n        node.warn(\"Row without 'value' field: \" + JSON.stringify(row));\n    } else {\n        const idx = indexById(selectedRows, id);\n\n        // ui-table often adds a `_selected` flag, but if it's missing,\n        // treat any incoming row as \"selected\".\n        const isSelected = (row._selected !== false);\n\n        if (isSelected) {\n            if (idx === -1) {\n                selectedRows.push(row);\n            }\n        } else {\n            if (idx !== -1) {\n                selectedRows.splice(idx, 1);\n            }\n        }\n    }\n}\n\n// Save to flow context for later (button will use this)\nflow.set('selected_products', selectedRows);\nflow.set('selected_product_ids', selectedRows.map(r => r.value));\n\n// Send the full cart as payload, so the next table can display it\nmsg.payload = selectedRows;\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1970,
+        "y": 580,
+        "wires": [
+            [
+                "8957dfd274c5165b"
+            ]
+        ]
+    },
+    {
+        "id": "8957dfd274c5165b",
+        "type": "ui-table",
+        "z": "94f976820f28d018",
+        "group": "eb5350b74e3e719c",
+        "name": "Shopping Cart",
+        "label": "",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "maxrows": 0,
+        "passthru": false,
+        "autocols": true,
+        "showSearch": true,
+        "deselect": true,
+        "selectionType": "none",
+        "columns": [],
+        "mobileBreakpoint": "sm",
+        "mobileBreakpointType": "defaults",
+        "action": "replace",
+        "className": "",
+        "x": 2240,
+        "y": 580,
+        "wires": [
+            [
+                "e524ac94cb3e5ce0"
+            ]
+        ]
+    },
+    {
+        "id": "e524ac94cb3e5ce0",
+        "type": "ui-button",
+        "z": "94f976820f28d018",
+        "group": "eb5350b74e3e719c",
+        "name": "Create Quotation",
+        "label": "Create Order",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "emulateClick": false,
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "iconPosition": "left",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "buttonColor": "",
+        "textColor": "",
+        "iconColor": "",
+        "enableClick": true,
+        "enablePointerdown": false,
+        "pointerdownPayload": "",
+        "pointerdownPayloadType": "str",
+        "enablePointerup": false,
+        "pointerupPayload": "",
+        "pointerupPayloadType": "str",
+        "x": 2490,
+        "y": 580,
+        "wires": [
+            [
+                "5a68721a2cc64421"
+            ]
+        ]
+    },
+    {
+        "id": "5a68721a2cc64421",
+        "type": "function",
+        "z": "94f976820f28d018",
+        "name": "build order payload",
+        "func": "const customerId = flow.get('customer_id');\nconst productIds = flow.get('selected_product_ids') || [];\n\nif (!customerId) {\n    node.error(\"No customer_id in flow context. Make sure a customer is selected first.\");\n    return null;\n}\n\nif (!productIds.length) {\n    node.error(\"No products selected. Please add items to the cart.\");\n    return null;\n}\n\n// Build JSON body for FastAPI\nmsg.headers = msg.headers || {};\nmsg.headers['Content-Type'] = 'application/json';\n\nmsg.payload = {\n    cust_id: customerId,\n    product_ids: productIds\n};\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2750,
+        "y": 580,
+        "wires": [
+            [
+                "bc919c77c3bd6a74"
+            ]
+        ]
+    },
+    {
+        "id": "bc919c77c3bd6a74",
+        "type": "http request",
+        "z": "94f976820f28d018",
+        "name": "/quotes/new_order",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://host.docker.internal:8000/quotes/new_order",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 2990,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6bf7017ac46e80ab",
+        "type": "ui-group",
+        "name": "Select Customer",
+        "page": "0f29e35e72bd0c73",
+        "width": 6,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "ee662d82cf0aed2a",
+        "type": "ui-group",
+        "name": "Customer Overview",
+        "page": "a1e308324254f7c0",
+        "width": 6,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "9df1fbab7fbb06a7",
+        "type": "ui-group",
+        "name": "sales orders",
+        "page": "72999b17eb70d94c",
+        "width": 6,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "e4772889bfeb240e",
+        "type": "ui-group",
+        "name": "Confirm Quotations",
+        "page": "82c9e9eed14c67a0",
+        "width": 6,
+        "height": "1",
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "dac97acc1d71ce71",
+        "type": "ui-group",
+        "name": "Invoices",
+        "page": "81dd615cbfb5046f",
+        "width": 6,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "6d87e13789dfc5f3",
+        "type": "ui-group",
+        "name": "Invoice Line",
+        "page": "81dd615cbfb5046f",
+        "width": 6,
+        "height": 1,
+        "order": 2,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "b2371a4422d431f8",
+        "type": "ui-group",
+        "name": "View Quote Details",
+        "page": "82c9e9eed14c67a0",
+        "width": 5,
+        "height": 1,
+        "order": 2,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "b40b2dff38577809",
+        "type": "ui-group",
+        "name": "See All Deliveries",
+        "page": "08dc973b97be9d89",
+        "width": 6,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "cf76aa0c8afd70b1",
+        "type": "ui-group",
+        "name": "View & Select Products",
+        "page": "cb814a26b5570c5a",
+        "width": 6,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "eb5350b74e3e719c",
+        "type": "ui-group",
+        "name": "Create Order",
+        "page": "cb814a26b5570c5a",
+        "width": 6,
+        "height": 1,
+        "order": 2,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "0f29e35e72bd0c73",
+        "type": "ui-page",
+        "name": "Login",
+        "ui": "cb48955d1093a166",
+        "path": "/Customer Select",
+        "icon": "login",
+        "layout": "grid",
+        "theme": "d3b098e8d3850623",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "a1e308324254f7c0",
+        "type": "ui-page",
+        "name": "Customer Overview",
+        "ui": "cb48955d1093a166",
+        "path": "/Customer Information",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "d3b098e8d3850623",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 2,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "72999b17eb70d94c",
+        "type": "ui-page",
+        "name": "Sales Orders",
+        "ui": "cb48955d1093a166",
+        "path": "/salesorders",
+        "icon": "sale",
+        "layout": "grid",
+        "theme": "d3b098e8d3850623",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 6,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "82c9e9eed14c67a0",
+        "type": "ui-page",
+        "name": "Quotations",
+        "ui": "cb48955d1093a166",
+        "path": "/page5",
+        "icon": "account-file-text",
+        "layout": "grid",
+        "theme": "d3b098e8d3850623",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 4,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "81dd615cbfb5046f",
+        "type": "ui-page",
+        "name": "Invoices",
+        "ui": "cb48955d1093a166",
+        "path": "/Invoices",
+        "icon": "file",
+        "layout": "grid",
+        "theme": "d3b098e8d3850623",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 5,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "08dc973b97be9d89",
+        "type": "ui-page",
+        "name": "Deliveries",
+        "ui": "cb48955d1093a166",
+        "path": "/Deliveries",
+        "icon": "send",
+        "layout": "grid",
+        "theme": "d3b098e8d3850623",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 7,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "cb814a26b5570c5a",
+        "type": "ui-page",
+        "name": "View & Order Prodcuts",
+        "ui": "cb48955d1093a166",
+        "path": "/vieworderproducts",
+        "icon": "label",
+        "layout": "grid",
+        "theme": "d3b098e8d3850623",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 3,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "cb48955d1093a166",
+        "type": "ui-base",
+        "name": "My Dashboard",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "headerContent": "page",
+        "navigationStyle": "icon",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": 5,
+        "showDisconnectNotification": true,
+        "allowInstall": true
+    },
+    {
+        "id": "d3b098e8d3850623",
+        "type": "ui-theme",
+        "name": "Purple Theme",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#7000cc",
+            "bgPage": "#d9bdef",
+            "groupBg": "#ffffff",
+            "groupOutline": "#7000cc"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "2d710403076a01da",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "@flowfuse/node-red-dashboard": "1.29.0"
+        }
+    }
+]

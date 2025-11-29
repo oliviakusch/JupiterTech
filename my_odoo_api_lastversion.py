@@ -317,22 +317,38 @@ async def send_and_cancel_sale_order(so_id: int):
 ###
 ###  / p r o d u c t s /
 ###
-
 @app.get("/products/", tags=["🛒 Products"])
 async def get_products():
-    "get list of all products available"
+    """
+    Get list of all products available.
+
+    - Keep `value` + `label` for Node-RED (used for IDs and dropdowns)
+    - Add `list_price` and `default_code` so the UI can show prices & codes
+    """
     models = xmlrpc.client.ServerProxy(f'{URL}/xmlrpc/2/object')
     search_conditions = [('sale_ok', '=', True)]
-    read_attributes = ['id', 'name','list_price', 'default_code']
+    read_attributes = ['id', 'name', 'list_price']
 
     try:
-        values = models.execute_kw(DB, UID, PW, 'product.product', 'search_read', [search_conditions, read_attributes])
-        return [{'value':c['id'],
-                 'label':c['name']} for c in values]
-    except Exception as err:
-        return {"Message": f"Odoo error:",
-                "Error": f"Unexpected  {type(err)} : {err}"}
+        values = models.execute_kw(
+            DB, UID, PW,
+            'product.product', 'search_read',
+            [search_conditions, read_attributes]
+        )
 
+        return [
+            {
+                "value": p["id"],          
+                "label": p["name"], 
+                "list_price": p.get("list_price"),
+            }
+            for p in values
+        ]
+    except Exception as err:
+        return {
+            "Message": "Odoo error:",
+            "Error": f"Unexpected  {type(err)} : {err}"
+        }
 ########################################################################
 ########################## INVOICES ####################################
 ########################################################################
